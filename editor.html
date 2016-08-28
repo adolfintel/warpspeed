@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>WarpSpeed.js Editor</title>
+<script type="text/javascript" src="warpspeed.min.js"></script>
+<script type="text/javascript">
+	function E(id){
+		return document.getElementById(id);
+	}
+	function V(id){
+		return E(id).value;
+	}
+	String.prototype.isBlank=function(){
+		return !this || /^\s*$/.test(this);
+	}
+	
+	function warpEffectChanged(){
+		if(V("warpEffect")=="true"){
+			E("warpEffectLengthSetting").style.display="";
+		}else{
+			E("warpEffectLengthSetting").style.display="none";
+		}
+	}
+	
+	function applySettings(){
+		var s={};
+		try{
+			s.speed=Number(V("speed"));
+			if(isNaN(s.speed)||s.speed<0) throw "Speed";
+			s.speedAdjFactor=Number(V("speedAdjFactor"));
+			if(isNaN(s.speedAdjFactor)||s.speedAdjFactor<0||s.speedAdjFactor>1) throw "Acceleration Factor";
+			s.density=Number(V("density"));
+			if(isNaN(s.density)||s.density<0) throw "Density";
+			if(V("useCircles")=="true"){
+				s.shape="circle";
+			}else{
+				s.shape="square";
+			}
+			if(V("warpEffect")=="true"){
+				s.warpEffect=true;
+				s.warpEffectLength=Number(V("warpEffectLength"));
+				if(isNaN(s.warpEffectLength)||s.warpEffectLength<0) throw "Warp Effect Length";
+			}else{
+				s.warpEffect=false;
+			}
+			s.depthFade=V("depthFade")=="true";
+			s.starSize=Number(V("starSize"));
+			if(isNaN(s.starSize)||s.starSize<0) throw "Star Size";
+			s.backgroundColor=V("backgroundColor");
+			var dummy=document.createElement("div");
+			dummy.style.backgroundColor=s.backgroundColor;
+			document.body.appendChild(dummy);
+			if(dummy.style.backgroundColor.isBlank()){
+				document.body.removeChild(dummy);
+				throw "Background color";
+			}else document.body.removeChild(dummy);
+			s.starColor=V("starColor");
+			dummy=document.createElement("div");
+			dummy.style.backgroundColor=s.starColor;
+			document.body.appendChild(dummy);
+			if(dummy.style.backgroundColor.isBlank()){
+				document.body.removeChild(dummy);
+				throw "Star color";
+			}else document.body.removeChild(dummy);
+		}catch(e){
+			alert("Invalid "+e);
+			return;
+		}
+		E("json").innerHTML=JSON.stringify(s);
+		new WarpSpeed("canvas",s);
+	}
+</script>
+<style type="text/css">
+	html,body{
+		padding:0;
+		margin:0;
+		font-family:"Roboto","Segoe UI",sans-serif;
+		font-weight:300;
+	}
+	div.fixedContainer{
+		position:fixed;
+		top:0;
+		left:0;
+		width:100%;
+		height:100%;
+	}
+	canvas{
+		width:100%;
+		height:100%;
+	}
+	#controls{
+		position:absolute;
+		width:100%;
+		bottom:0;
+		background-color:rgba(0,0,0,0.4);
+		color:#FFFFFF;
+		max-height:3rem;
+		border-top:0.1rem solid rgba(255,255,255,0.2);
+	}
+	#controls.expanded{
+		max-height:90%;
+		overflow-y:auto;
+	}
+	#controls>div.header{
+		height:3rem;
+		text-align:center;
+		font-size:2em;
+		line-height:3rem;
+		text-transform:uppercase;
+		background-color:rgba(0,0,0,0.4);
+		cursor:pointer;
+	}
+	#controls>form{
+		margin:2rem auto 2rem auto;
+		text-align:center;
+	}
+	input[type="submit"]{
+		display:block;
+		margin-left:auto; margin-right: auto;
+		margin-top:2rem;
+		padding:0.5rem 2rem 0.5rem 2rem;
+		border:1px solid #0092ff;
+		background-color:#20A0FF;
+		color:#FFFFFF;
+		border-radius:0.15rem;
+		text-transform:uppercase;
+		font-size:1rem;
+	}
+	input[type="submit"]:hover{
+		background-color:#55b7ff;
+	}
+	input[type="submit"]:active{
+		background-color:#0092ff;
+	}
+	div.setting{
+		display:block;
+		width:100%;
+		margin-top:1rem;
+		margin-bottom:1rem;
+		text-align:center;
+	}
+	div.setting>div.name{
+		min-width:10rem;
+		display:inline-block;
+	}
+	div.setting>input, div.setting>select{
+		min-width:15rem;
+		background-color:rgba(255,255,255,0.6);
+		text-align:center;
+		border:none;
+		padding:0;
+		margin:0;
+		display:inline-block;
+		font-size:1rem;
+		vertical-align:top
+	}
+	div.setting > select option{
+		text-align:center;
+	}
+	#json{
+		font-family:"Consolas", "Lucida Console", monospace;
+		font-size:0.75rem;
+		margin-top:1rem;
+		width:95%;
+		overflow-x:auto;
+		display:block;
+		margin-left:auto;
+		margin-right:auto;
+	}
+	
+</style>
+</head>
+<body onload="warpEffectChanged(); applySettings();">
+<div class="fixedContainer" style="z-index:1">
+	<canvas id="canvas"></canvas>
+</div>
+<div class="fixedContainer" style="z-index:2">
+	<div id="controls">
+		<div class="header" onclick="E('controls').className=E('controls').className.isBlank()?'expanded':''">Settings</div>
+		<form action="javascript:applySettings()">
+			<div class="setting">
+				<div class="name">Speed</div>
+				<input type="text" id="speed" value="0.7"/>
+			</div>
+			<div class="setting">
+				<div class="name">Acceleration factor<br/>(0-1)</div>
+				<input type="text" id="speedAdjFactor" value="0.03"/>
+			</div>
+			<div class="setting">
+				<div class="name">Density</div>
+				<input type="text" id="density" value="0.7"/>
+			</div>
+			<div class="setting">
+				<div class="name">Shape</div>
+				<select id="useCircles">
+					<option value="true" selected="selected">Circle</option>
+					<option value="false">Square (faster)</option>
+				</select>
+			</div>
+			<div class="setting">
+				<div class="name">Star Size</div>
+				<input type="text" id="starSize" value="3"/>
+			</div>
+			<div class="setting">
+				<div class="name">Warp Effect</div>
+				<select id="warpEffect" onchange="warpEffectChanged()">
+					<option value="true" selected="selected">Yes</option>
+					<option value="false">No (faster)</option>
+				</select>
+			</div>
+			<div class="setting" id="warpEffectLengthSetting">
+				<div class="name">Warp Effect Length</div>
+				<input type="text" id="warpEffectLength" value="5"/>
+			</div>
+			<div class="setting">
+				<div class="name">Depth fade</div>
+				<select id="depthFade">
+					<option value="true" selected="selected">Yes</option>
+					<option value="false">No (faster)</option>
+				</select>
+			</div>
+			<div class="setting">
+				<div class="name">Background color</div>
+				<input type="text" id="backgroundColor" value="hsl(263,45%,7%)"/>
+			</div>
+			<div class="setting">
+				<div class="name">Star color</div>
+				<input type="text" id="starColor" value="#FFFFFF"/>
+			</div>
+			<input type="submit" value="Apply" />
+			<div id="json"></div>
+		</form>
+	</div>
+</div>
+</body>
+</html>
