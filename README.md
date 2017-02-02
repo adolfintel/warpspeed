@@ -3,7 +3,7 @@
 WarpSpeed.js is a simple and lightweight library for drawing an animated and customizable starfield to an HTML5 Canvas element, with a good amout of settings that you can tweak. Settings can also be tweaked at run time.
 
 ## See it in action
-[Play with the configurator](http://adolfintel.com/warpspeed/editor.html)
+[Play with the configurator](http://fdossena.com/warpspeed/editor.html)
 
 ## Compatibility
 
@@ -26,11 +26,11 @@ To tweak the settings, you can use `editor.html`, and copy the string at the bot
 - __example[1-3].html__		Various usage examples
 
 ## Screenshots
-![Screenshot](http://adolfintel.com/warpspeed/screen1.png)
-![Screenshot](http://adolfintel.com/warpspeed/screen2.png)
-![Screenshot](http://adolfintel.com/warpspeed/screen3.png)
-![Screenshot](http://adolfintel.com/warpspeed/screen4.png)
-![Screenshot](http://adolfintel.com/warpspeed/screen5.png)
+![Screenshot](http://fdossena.com/warpspeed/screen1.png)
+![Screenshot](http://fdossena.com/warpspeed/screen2.png)
+![Screenshot](http://fdossena.com/warpspeed/screen3.png)
+![Screenshot](http://fdossena.com/warpspeed/screen4.png)
+![Screenshot](http://fdossena.com/warpspeed/screen5.png)
 
 ## License
 Copyright (C) 2016 Federico Dossena
