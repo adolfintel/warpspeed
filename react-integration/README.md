@@ -18,12 +18,6 @@ Remember to include a fallback if you're planning to support older browsers too.
 
 To tweak the settings, you can use `editor.html`, and copy the string at the bottom, then in your page you can call `new WarpSpeed('<your canvas id here>','<string from editor>')`
 
-## Usage with React
-
-1. Copy warpspeed.js in react-integration folder, and paste it in your React file.
-2. Add 'import WarpSpeed from "./warpspeed.js"' at the top of your React file.
-3. Add 'const x = new WarpSpeed('your canvas id here')' in your componentDidMount() function.
-
 ## Files
 
 - __warpspeed.js__		Source code
