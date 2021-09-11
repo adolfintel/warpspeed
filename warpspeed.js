@@ -34,13 +34,7 @@ function WarpSpeed(targetId,config){
 	this.BACKGROUND_COLOR=config.backgroundColor==undefined?"hsl(263,45%,7%)":config.backgroundColor;	
 	var canvas=document.getElementById(this.targetId);
 	canvas.width=1; canvas.height=1;
-	var ctx=canvas.getContext("2d");
-	ctx.fillStyle=this.BACKGROUND_COLOR;
-	ctx.fillRect(0,0,1,1);
-	ctx.fillStyle=config.starColor==undefined?"#FFFFFF":config.starColor;
-	ctx.fillRect(0,0,1,1);
-	var color=ctx.getImageData(0,0,1,1).data;
-	this.STAR_R=color[0]; this.STAR_G=color[1]; this.STAR_B=color[2];
+    this.STAR_COLOR=config.starColor==undefined?"#FFFFFF":config.starColor;
 	this.prevW=-1; this.prevH=-1; //width and height will be set at first draw call
 	this.stars=[];
 	for(var i=0;i<this.DENSITY*1000;i++){
@@ -71,9 +65,10 @@ WarpSpeed.prototype={
 			this.size=(canvas.height<canvas.width?canvas.height:canvas.width)/(10/(this.STAR_SCALE<=0?0:this.STAR_SCALE));
 			if(this.WARP_EFFECT) this.maxLineWidth=this.size/30;
 			var ctx=canvas.getContext("2d");
+            ctx.globalAlpha=1.0;
 			ctx.fillStyle=this.BACKGROUND_COLOR;
 			ctx.fillRect(0,0,canvas.width,canvas.height);
-			var rgb="rgb("+this.STAR_R+","+this.STAR_G+","+this.STAR_B+")", rgba="rgba("+this.STAR_R+","+this.STAR_G+","+this.STAR_B+",";
+			ctx.fillStyle=this.STAR_COLOR;
 			for(var i=0;i<this.stars.length;i++){
 				var s=this.stars[i];
 				var xOnDisplay=s.x/s.z, yOnDisplay=s.y/s.z;
@@ -82,9 +77,7 @@ WarpSpeed.prototype={
 				if(size<0.3) continue; //don't draw very small dots
 				if(this.DEPTH_ALPHA){
 					var alpha=(1000-s.z)/1000;
-					ctx.fillStyle=rgba+(alpha>1?1:alpha)+")";
-				}else{
-					ctx.fillStyle=rgb;
+					ctx.globalAlpha=alpha;
 				}
 				if(this.WARP_EFFECT){
 					ctx.beginPath();

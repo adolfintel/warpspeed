@@ -14,7 +14,7 @@ Remember to include a fallback if you're planning to support older browsers too.
 ## Basic usage
 
 1. Include warpspeed.min.js into your page.
-1. call new WarpSpeed('your canvas id here')
+2. call new WarpSpeed('your canvas id here')
 
 To tweak the settings, you can use `editor.html`, and copy the string at the bottom, then in your page you can call `new WarpSpeed('<your canvas id here>','<string from editor>')`
 
@@ -39,7 +39,7 @@ To tweak the settings, you can use `editor.html`, and copy the string at the bot
 ![Screenshot](http://fdossena.com/warpspeed/screen5.png)
 
 ## License
-Copyright (C) 2016 Federico Dossena
+Copyright (C) 2016-2021 Federico Dossena
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Lesser General Public License as published by
