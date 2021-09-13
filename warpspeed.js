@@ -71,13 +71,13 @@ WarpSpeed.prototype={
 			ctx.fillStyle=this.STAR_COLOR;
 			for(var i=0;i<this.stars.length;i++){
 				var s=this.stars[i];
-				var xOnDisplay=s.x/s.z, yOnDisplay=s.y/s.z;
+                var xOnDisplay=s.x/s.z, yOnDisplay=s.y/s.z;
 				if(!this.WARP_EFFECT&&(xOnDisplay<-0.5||xOnDisplay>0.5||yOnDisplay<-0.5||yOnDisplay>0.5))continue;
 				var size=s.size*this.size/s.z;
 				if(size<0.3) continue; //don't draw very small dots
 				if(this.DEPTH_ALPHA){
 					var alpha=(1000-s.z)/1000;
-					ctx.globalAlpha=alpha;
+					ctx.globalAlpha=alpha<0?0:alpha>1?1:alpha;
 				}
 				if(this.WARP_EFFECT){
 					ctx.beginPath();

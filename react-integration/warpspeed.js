@@ -121,7 +121,7 @@
                     if(size<0.3) continue; //don't draw very small dots
                     if(this.DEPTH_ALPHA){
                         var alpha=(1000-s.z)/1000;
-                        ctx.globalAlpha=alpha;
+                        ctx.globalAlpha=alpha<0?0:alpha>1?1:alpha;
                     }
                     if(this.WARP_EFFECT){
                         ctx.beginPath();
